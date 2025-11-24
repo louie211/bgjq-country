@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>养老院 - Minecraft国战服务器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 基础样式 */
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --secondary: #ff9800;
+            --dark: #121212;
+            --light: #f5f5f5;
+            --gray: #424242;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        header {
+            background-color: rgba(18, 18, 18, 0.9);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: var(--secondary);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 内容区域 */
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+            margin: 15px auto;
+        }
+        
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* 成员卡片 */
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .member-card {
+            background-color: var(--gray);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .member-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .member-avatar {
+            width: 100%;
+            height: 200px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--light);
+        }
+        
+        .member-info {
+            padding: 20px;
+        }
+        
+        /* 地图区域 */
+        .map-container {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .map-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            color: white;
+        }
+        
+        /* 联系区域 */
+        .contact-info {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .contact-info p {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .qq-group {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--primary);
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        
+        .qq-group i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: #000;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links li {
+            margin: 0 15px;
+        }
+        
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .copyright {
+            color: #777;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-mountain"></i>
+                    <!-- 国家名称 - 可修改 -->
+                    <span>养老院</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#about">关于我们</a></li>
+                    <li><a href="#members">核心成员</a></li>
+                    <li><a href="#map">专属地图</a></li>
+                    <li><a href="#contact">加入我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>养老院 Minecraft国战服务器</h1>
+                <!-- 国家宣言 - 可修改 -->
+                <p>安心养老，共建繁荣</p>
+                <a href="#contact" class="btn">立即加入</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我们 -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">关于我们</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>我们是Minecraft国战服务器中的"养老院"邦国，致力于为玩家提供一个和谐、互助的游戏环境。</p>
+                    <p>在激烈的国战竞争中，我们选择了一条不同的道路 - 建设一个和平繁荣的社区，让每位成员都能找到归属感。</p>
+                    <!-- 服务器信息 - 可修改 -->
+                    <p><strong>服务器地址:</strong> bgjq.simpfun.cn</p>
+                    <p><strong>服务器在线地图:</strong> <a href="http://bgjq.simpfun.cn/" style="color: var(--secondary);">点击查看</a></p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Minecraft建筑">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心成员 -->
+    <section id="members" style="background-color: #1a1a1a;">
+        <div class="container">
+            <h2 class="section-title">核心成员</h2>
+            <div class="members-grid">
+                <!-- 成员列表 - 可修改 -->
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>LouieMAIN</h3>
+                        <p>邦国创始人</p>
+                    </div>
+                </div>
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <i class="fas fa-helmet-battle"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>liumukun</h3>
+                        <p>军事指挥官</p>
+                    </div>
+                </div>
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <i class="fas fa-hammer"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>待添加</h3>
+                        <p>建筑大师</p>
+                    </div>
+                </div>
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>待添加</h3>
+                        <p>农业专家</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 专属地图 -->
+    <section id="map">
+        <div class="container">
+            <h2 class="section-title">专属地图</h2>
+            <div class="map-container">
+                <!-- 地图图片 - 可修改 -->
+                <img src="https://via.placeholder.com/1200x600/2e7d32/ffffff?text=养老院专属地图+（待添加）" alt="养老院专属地图" class="map-image">
+                <div class="map-overlay">
+                    <!-- 地图更新时间 - 可修改 -->
+                    <p>最后更新: 2023年10月15日</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系方式 -->
+    <section id="contact" style="background-color: #1a1a1a;">
+        <div class="container">
+            <h2 class="section-title">加入我们</h2>
+            <div class="contact-info">
+                <p>准备好加入养老院了吗？</p>
+                <p>首先加入我们的QQ群，了解更多信息</p>
+                <!-- QQ群号 - 可修改 -->
+                <div class="qq-group">
+                    <i class="fab fa-qq"></i>
+                    <span>QQ群: 102183202</span>
+                </div>
+                <p style="margin-top: 30px;">或者直接进入服务器，寻找我们的成员</p>
+                <a href="#" class="btn" style="margin-top: 20px;">进入服务器</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <ul class="footer-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#about">关于我们</a></li>
+                <li><a href="#members">核心成员</a></li>
+                <li><a href="#map">专属地图</a></li>
+                <li><a href="#contact">加入我们</a></li>
+            </ul>
+            <p class="copyright">&copy; 2023 养老院 Minecraft国战服务器. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 导航栏背景变化
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if(window.scrollY > 100) {
+                header.style.backgroundColor = 'rgba(18, 18, 18, 0.95)';
+            } else {
+                header.style.backgroundColor = 'rgba(18, 18, 18, 0.9)';
+            }
+        });
+    </script>
+</body>
+</html>
